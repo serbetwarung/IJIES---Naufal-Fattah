@@ -1,0 +1,30 @@
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Generated outputs
+plots/
+grafik_scopus/
+output_images/
+key/
+KunciFinal_*.csv
+Kunci_Final_Gabungan.csv
+Input_NIST_*.csv
+sudahujinist_*.csv
+Final_AES_*.txt
+*.png
+*.pdf
+
+# Local binaries and archives
+*.exe
+*.rar
+*.zip
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
