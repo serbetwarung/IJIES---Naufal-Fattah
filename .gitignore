@@ -21,6 +21,8 @@ Final_AES_*.txt
 
 # Local binaries and archives
 *.exe
+!NIST-Test-Alice.exe
+!NIST-Test-Bob.exe
 *.rar
 *.zip
 
