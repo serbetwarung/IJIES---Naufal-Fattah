@@ -14,6 +14,7 @@ Repository ini berisi implementasi eksperimen Secret Key Generation (SKG) berbas
 | `p_rekon.py` | Tahap rekonsiliasi. |
 | `p_univhash.py` | Tahap privacy amplification Universal Hash. |
 | `plot_*.py`, `*_gambar.py`, `kgrvsbmr.py` | Script visualisasi/grafik pendukung artikel/tesis. |
+| `sts-2.1.2/` | NIST Statistical Test Suite untuk validasi keacakan hasil privacy amplification. |
 
 ## Tahapan Pipeline
 
@@ -34,8 +35,13 @@ Repository ini berisi implementasi eksperimen Secret Key Generation (SKG) berbas
    - Menggunakan matriks Universal Hash 128-bit dari `Hashtable128.csv`.
    - Menghasilkan bit kunci akhir dan file input untuk uji NIST.
 
-5. **Uji NIST dan Ekstraksi AES**
-   - Menjalankan biner `NIST-Test-Alice.exe` pada Windows atau `NIST-Test-Alice` pada Linux/Raspberry Pi.
+5. **Validasi Privacy Amplification dengan NIST STS**
+   - Menguji keacakan bit hasil privacy amplification menggunakan NIST Statistical Test Suite.
+   - Source NIST STS disertakan pada folder `sts-2.1.2/`.
+   - Pipeline Python menyiapkan file `Input_NIST_*.csv` sebagai input validasi.
+
+6. **Ekstraksi AES**
+   - Menjalankan wrapper/biner `NIST-Test-Alice.exe` pada Windows atau `NIST-Test-Alice` pada Linux/Raspberry Pi.
    - Mengambil blok yang lolos validasi.
    - Menghasilkan kunci AES-128 dalam format heksadesimal.
 
@@ -47,7 +53,7 @@ Repository ini berisi implementasi eksperimen Secret Key Generation (SKG) berbas
 - `matplotlib`
 - `scipy`
 - `PyWavelets`
-- Biner/source NIST test untuk tahap validasi keacakan
+- Compiler C seperti `gcc` untuk membangun NIST STS atau wrapper NIST
 
 Install dependensi Python:
 
@@ -70,6 +76,26 @@ Pipeline utama membutuhkan file berikut di working directory atau satu level di 
 - Untuk NIST:
   - Windows: `NIST-Test-Alice.exe`
   - Linux/Raspberry Pi: `NIST-Test-Alice`
+
+## Validasi Privacy Amplification
+
+Folder `sts-2.1.2/` berisi NIST Statistical Test Suite yang digunakan untuk mengevaluasi keacakan bit setelah tahap privacy amplification. Pada pipeline ini, tahap privacy amplification menghasilkan file input seperti:
+
+- `Input_NIST_Alice.csv`
+- `Input_NIST_Bob.csv`
+- `Input_NIST_<prefix>_Alice.csv`
+- `Input_NIST_<prefix>_Bob.csv`
+
+File tersebut kemudian divalidasi menggunakan NIST STS atau wrapper yang dipanggil oleh `pipeline_gabungan.py`. Hasil validasi berupa indeks blok yang lolos uji keacakan, misalnya `sudahujinist_Alice_Sken1.csv`, lalu dipakai pada tahap ekstraksi AES untuk memilih blok kunci yang valid.
+
+Untuk membangun NIST STS dari source:
+
+```bash
+cd sts-2.1.2
+make
+```
+
+Perintah tersebut menghasilkan executable `assess`. Pada Windows, build dapat dilakukan melalui lingkungan yang menyediakan `make` dan `gcc`, misalnya MSYS2, MinGW, WSL, atau Linux/Raspberry Pi.
 
 ## Cara Menjalankan
 

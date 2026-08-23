@@ -24,6 +24,10 @@ Final_AES_*.txt
 *.rar
 *.zip
 
+# C build outputs
+*.o
+sts-2.1.2/assess
+
 # OS/editor files
 .DS_Store
 Thumbs.db
